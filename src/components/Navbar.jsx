@@ -10,20 +10,27 @@ export default function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // ✅ Smooth scroll or navigate logic
+  // ✅ Updated: Smart routing + scrolling logic
   const handleScrollOrNavigate = (id) => {
     setMenuOpen(false);
+    
+    // Route-based navigation for main pages
     if (["services", "work", "contact"].includes(id)) {
       navigate(`/${id}`);
-    } else if (location.pathname === "/") {
+      return;
+    }
+    
+    // Home page scrolling
+    if (id === "home" || location.pathname === "/") {
       const el = document.getElementById(id);
       if (el) el.scrollIntoView({ behavior: "smooth" });
     } else {
+      // Navigate to home first, then scroll
       navigate("/");
       setTimeout(() => {
         const el = document.getElementById(id);
         if (el) el.scrollIntoView({ behavior: "smooth" });
-      }, 300);
+      }, 100); // Reduced timeout for faster response
     }
   };
 
